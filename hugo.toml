@@ -1,0 +1,14 @@
+baseURL = "https://your-zwsoft-domain.example/"
+languageCode = "en-us"
+title = "ZWCAD 2026 | ZWSOFT UK"
+# Everything lives in static; templates not required for this single-page site.
+
+[params.tracking]
+# Set these to enable Google Analytics and Google Ads conversion tracking.
+# Example:
+# gaId = "G-XXXXXXXXXX"
+# adsId = "AW-XXXXXXXXX"
+# adsLabel = "abcdEFghijkLmnoPqrS"
+gaId = ""
+adsId = "AW-17647481873"
+adsLabel = "2SE-CM371sobEJHo_N5B"
