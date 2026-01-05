@@ -1,4 +1,4 @@
-baseURL = "https://your-zwsoft-domain.example/"
+baseURL = "https://zwsoftuk.com"
 languageCode = "en-us"
 title = "ZWCAD 2026 | ZWSOFT UK"
 # Everything lives in static; templates not required for this single-page site.

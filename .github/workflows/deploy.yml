@@ -1,0 +1,74 @@
+name: Build and Deploy (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.128.0"
+          extended: true
+
+      - name: Build site
+        env:
+          SITE_BASEURL: ${{ vars.SITE_BASEURL }}
+          GA_ID: ${{ vars.GA_ID }}
+          ADS_ID: ${{ vars.ADS_ID }}
+          ADS_LABEL: ${{ vars.ADS_LABEL }}
+        run: |
+          set -euo pipefail
+          if [ -n "$SITE_BASEURL" ]; then export HUGO_BASEURL="$SITE_BASEURL"; fi
+          if [ -n "$GA_ID" ]; then export HUGO_PARAMS_TRACKING_GAID="$GA_ID"; fi
+          if [ -n "$ADS_ID" ]; then export HUGO_PARAMS_TRACKING_ADSID="$ADS_ID"; fi
+          if [ -n "$ADS_LABEL" ]; then export HUGO_PARAMS_TRACKING_ADSLABEL="$ADS_LABEL"; fi
+          hugo --minify
+      - name: Deploy via FTP (optional)
+        if: ${{ secrets.FTP_HOST != '' && secrets.FTP_USERNAME != '' && secrets.FTP_PASSWORD != '' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          server-dir: ${{ secrets.FTP_PATH }}
+          local-dir: public
+          port: ${{ secrets.FTP_PORT }}
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
