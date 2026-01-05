@@ -20,4 +20,20 @@
     <loc>https://zwsoftuk.com/cookies.html</loc>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://zwsoftuk.com/zwcad.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://zwsoftuk.com/zwcad-uk.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://zwsoftuk.com/zwcad-license.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://zwsoftuk.com/zwcad-cost.html</loc>
+    <priority>0.6</priority>
+  </url>
 </urlset>
