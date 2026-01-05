@@ -23,6 +23,7 @@ jobs:
       FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       FTP_PATH: ${{ secrets.FTP_PATH }}
       FTP_PORT: ${{ secrets.FTP_PORT }}
+      FTP_PROTOCOL: ${{ secrets.FTP_PROTOCOL || 'ftps' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,10 +56,11 @@ jobs:
           server: ${{ env.FTP_HOST }}
           username: ${{ env.FTP_USERNAME }}
           password: ${{ env.FTP_PASSWORD }}
-          protocol: ftps
+          protocol: ${{ env.FTP_PROTOCOL }}
           server-dir: ${{ env.FTP_PATH }}
           local-dir: public/
-          port: ${{ env.FTP_PORT }}
+          port: ${{ env.FTP_PORT || 21 }}
+          timeout: 120000
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
